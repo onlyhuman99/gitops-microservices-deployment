@@ -10,6 +10,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.15</version>
+        <!-- I just updated the pom file -->
         <relativePath/>
     </parent>
 
