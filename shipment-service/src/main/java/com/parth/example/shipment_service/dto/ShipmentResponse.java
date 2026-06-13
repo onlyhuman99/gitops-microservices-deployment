@@ -1,7 +1,7 @@
 package com.parth.example.shipment_service.dto;
 
 import lombok.*;
-
+import com.parth.example.shipment_service.entity.ShipmentStatus;
 @Getter
 @Setter
 @Builder
@@ -13,5 +13,5 @@ public class ShipmentResponse {
     private String trackingNumber;
     private String source;
     private String destination;
-    private String status;
+    private ShipmentStatus status;
 }

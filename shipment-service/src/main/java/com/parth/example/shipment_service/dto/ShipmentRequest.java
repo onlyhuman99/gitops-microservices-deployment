@@ -2,7 +2,7 @@ package com.parth.example.shipment_service.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
+import com.parth.example.shipment_service.entity.ShipmentStatus;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,5 +19,5 @@ public class ShipmentRequest {
     private String destination;
 
     @NotBlank
-    private String status;
+    private ShipmentStatus status;
 }

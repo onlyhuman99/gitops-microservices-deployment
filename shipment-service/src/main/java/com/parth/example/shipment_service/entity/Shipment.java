@@ -1,5 +1,7 @@
 package com.parth.example.shipment_service.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,5 +24,21 @@ public class Shipment {
 
     private String destination;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ShipmentStatus status;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
