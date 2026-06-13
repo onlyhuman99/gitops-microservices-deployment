@@ -1,5 +1,6 @@
 package com.parth.example.tracking_service.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -9,9 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 public class TrackingRequest {
 
-    @NotNull
+    @NotNull(message = "Shipment ID is required")
     private Long shipmentId;
 
-    @NotNull
+    @NotBlank(message = "Current location is required")
     private String currentLocation;
 }
