@@ -1,0 +1,25 @@
+Client
+   |
+   |
+   v
++-------------------+
+| Shipment Service  |
++-------------------+
+          |
+          |
+          +----------------+
+          |                |
+          v                v
++----------------+   +------------------+
+| Tracking       |   | Warehouse        |
+| Service        |   | Service          |
++----------------+   +------------------+
+          |
+          |
+          v
++------------------+
+| Notification     |
+| Service          |
++------------------+
+
+Each service owns its own PostgreSQL database.
