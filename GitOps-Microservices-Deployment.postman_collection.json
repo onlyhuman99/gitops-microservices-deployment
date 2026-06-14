@@ -1,0 +1,532 @@
+{
+  "info": {
+    "_postman_id": "3b45da01-0d78-4a42-b7ca-0708f06eaedf",
+    "name": "GitOps Microservices Deployment",
+    "description": "Demo WorkFlow:\n\n1. Create Shipment\n    \n2. Update Tracking Location\n    \n3. Create Warehouse\n    \n4. Assign Shipment To Warehouse\n    \n5. Send Notification\n    \n6. View Tracking History\n    \n7. View Warehouse Assignments\n    \n8. View Notifications",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52387360",
+    "_collection_link": "https://go.postman.co/collection/52387360-3b45da01-0d78-4a42-b7ca-0708f06eaedf?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Shipment Service",
+      "item": [
+        {
+          "name": "Create Shipment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"trackingNumber\": \"TRK001\",\r\n  \"source\": \"Hyderabad\",\r\n  \"destination\": \"Bangalore\",\r\n  \"status\": \"CREATED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/shipments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "shipments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Shipments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/shipments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "shipments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get shipment By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/shipments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "shipments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Shipment",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"trackingNumber\": \"TRK001\",\r\n  \"source\": \"Hyderabad\",\r\n  \"destination\": \"Chennai\",\r\n  \"status\": \"IN_TRANSIT\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/shipments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "shipments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Shipment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/api/shipments/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "api",
+                "shipments",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tracking Service",
+      "item": [
+        {
+          "name": "Update Location",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"shipmentId\": 1,\r\n    \"currentLocation\": \"Hyderabad\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/tracking/update",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "tracking",
+                "update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Location Again",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"shipmentId\": 1,\r\n    \"currentLocation\": \"Guntur\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/tracking/update",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "tracking",
+                "update"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get tracking history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/api/tracking/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "tracking",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Warehouse Service",
+      "item": [
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouseCode\": \"WH001\",\r\n  \"name\": \"Hyderabad Central\",\r\n  \"location\": \"Hyderabad\",\r\n  \"capacity\": 5,\r\n  \"availableCapacity\": 5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Warehouse 2",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouseCode\": \"WH002\",\r\n  \"name\": \"Vijayawada Hub\",\r\n  \"location\": \"Vijayawada\",\r\n  \"capacity\": 10,\r\n  \"availableCapacity\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All warehouses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Warehouse By Id",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Update Warehouse",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"warehouseCode\": \"WH001\",\r\n  \"name\": \"Hyderabad Mega Hub\",\r\n  \"location\": \"Hyderabad\",\r\n  \"capacity\": 20,\r\n  \"availableCapacity\": 20\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Warehouse",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Shipment to Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"shipmentId\": 1,\r\n  \"warehouseId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses/assign",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses",
+                "assign"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "View Assignment history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/api/warehouses/1/assignments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8083",
+              "path": [
+                "api",
+                "warehouses",
+                "1",
+                "assignments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Send Email Notification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"shipmentId\": 1,\r\n  \"message\": \"Shipment TRK001 has been created\",\r\n  \"type\": \"EMAIL\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/notifications/send",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8084",
+              "path": [
+                "api",
+                "notifications",
+                "send"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Send SMS Notification",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"shipmentId\": 1,\r\n  \"message\": \"Shipment TRK001 is in transit\",\r\n  \"type\": \"SMS\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/notifications/send",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8084",
+              "path": [
+                "api",
+                "notifications",
+                "send"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Notifications",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"shipmentId\": 1,\r\n  \"message\": \"Shipment TRK001 is in transit\",\r\n  \"type\": \"SMS\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8084/api/notifications",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8084",
+              "path": [
+                "api",
+                "notifications"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Notifications by shipment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/api/notifications/shipment/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8084",
+              "path": [
+                "api",
+                "notifications",
+                "shipment",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
