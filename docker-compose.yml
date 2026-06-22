@@ -1,22 +1,20 @@
-version: "3.9"
-
 services:
 
   postgres:
     image: postgres:16
-    container_name: shipment-postgres
-    restart: always
+    container_name: postgres
 
     environment:
-      POSTGRES_DB: shipment_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Pardhu@123
+      POSTGRES_DB: postgres
 
     ports:
       - "5432:5432"
 
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   shipment-service:
     build:
@@ -32,6 +30,57 @@ services:
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shipment_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+
+  tracking-service:
+    build:
+      context: ./tracking-service
+
+    container_name: tracking-service
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8082:8082"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tracking_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+
+  warehouse-service:
+    build:
+      context: ./warehouse-service
+
+    container_name: warehouse-service
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8083:8083"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/warehouse_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+
+  notification-service:
+    build:
+      context: ./notification-service
+
+    container_name: notification-service
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8084:8084"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notification_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: Pardhu@123
 
