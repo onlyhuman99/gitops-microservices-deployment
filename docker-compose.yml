@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: shipment-postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: shipment_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Pardhu@123
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  shipment-service:
+    build:
+      context: ./shipment-service
+
+    container_name: shipment-service
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shipment_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+
+volumes:
+  postgres-data:
