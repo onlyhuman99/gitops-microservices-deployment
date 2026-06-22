@@ -1,6 +1,7 @@
 package com.parth.example.warehouse_service.controller;
 
 import com.parth.example.warehouse_service.dto.AssignShipmentRequest;
+import com.parth.example.warehouse_service.dto.AutoAssignShipmentRequest;
 import com.parth.example.warehouse_service.dto.WarehouseRequest;
 import com.parth.example.warehouse_service.entity.ShipmentAssignment;
 import com.parth.example.warehouse_service.entity.Warehouse;
@@ -57,7 +58,7 @@ public class WarehouseController {
     }
     
     @PostMapping("/assign")
-public Warehouse assignShipment(
+    public Warehouse assignShipment(
         @Valid
         @RequestBody AssignShipmentRequest request) {
 
@@ -66,11 +67,19 @@ public Warehouse assignShipment(
             request.getWarehouseId());
     }
  
-    @GetMapping("/{warehouseId}/assignments")
-public List<ShipmentAssignment>
-getAssignments(
-        @PathVariable Long warehouseId) {
+    @PostMapping("/auto-assign")
+    public Warehouse autoAssignShipment(
+        @Valid
+        @RequestBody AutoAssignShipmentRequest request) {
+        return service.autoAssignShipment(
+                request.getShipmentId());
+    }
 
-    return assignmentRepository.findByWarehouseId(warehouseId);
-}
+    @GetMapping("/{warehouseId}/assignments")
+    public List<ShipmentAssignment>
+    getAssignments(
+            @PathVariable Long warehouseId) {
+
+        return assignmentRepository.findByWarehouseId(warehouseId);
+    }
 }

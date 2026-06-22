@@ -16,14 +16,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WarehouseService {
 
-    private final WarehouseRepository repository;
-    private final ShipmentAssignmentRepository assignmentRepository;
+        private final WarehouseRepository repository;
+        private final ShipmentAssignmentRepository assignmentRepository;
 
-    public Warehouse createWarehouse(
-            WarehouseRequest request) {
+        public Warehouse createWarehouse(
+                WarehouseRequest request) {
 
-        Warehouse warehouse =
-                Warehouse.builder()
+        Warehouse warehouse = Warehouse.builder()
                         .warehouseCode(request.getWarehouseCode())
                         .name(request.getName())
                         .location(request.getLocation())
@@ -33,72 +32,108 @@ public class WarehouseService {
                         .build();
 
         return repository.save(warehouse);
-    }
+        }
 
-    public List<Warehouse> getAllWarehouses() {
-        return repository.findAll();
-    }
+        public List<Warehouse> getAllWarehouses() {
+                return repository.findAll();
+        }
 
-    public Warehouse getWarehouseById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() ->
-                        new WarehouseNotFoundException(id));
-    }
+        public Warehouse getWarehouseById(Long id) {
+                return repository.findById(id)
+                .orElseThrow(() -> new WarehouseNotFoundException(id));
+        }
 
-    public Warehouse updateWarehouse(
-            Long id,
-            WarehouseRequest request) {
+        public Warehouse updateWarehouse(
+                Long id,
+                WarehouseRequest request) {
 
-        Warehouse warehouse =
-                getWarehouseById(id);
+                Warehouse warehouse =
+                        getWarehouseById(id);
 
-        warehouse.setWarehouseCode(
-                request.getWarehouseCode());
+                warehouse.setWarehouseCode(
+                        request.getWarehouseCode());
 
-        warehouse.setName(
-                request.getName());
+                warehouse.setName(
+                        request.getName());
 
-        warehouse.setLocation(
-                request.getLocation());
+                warehouse.setLocation(
+                        request.getLocation());
 
-        warehouse.setCapacity(
-                request.getCapacity());
+                warehouse.setCapacity(
+                        request.getCapacity());
 
-        warehouse.setAvailableCapacity(
-                request.getAvailableCapacity());
+                warehouse.setAvailableCapacity(
+                        request.getAvailableCapacity());
 
-        return repository.save(warehouse);
-    }
+                return repository.save(warehouse);
+        }
 
-    public void deleteWarehouse(Long id) {
+        public void deleteWarehouse(Long id) {
+                Warehouse warehouse =
+                        getWarehouseById(id);
 
-        Warehouse warehouse =
-                getWarehouseById(id);
+                repository.delete(warehouse);
+        }
 
-        repository.delete(warehouse);
-    }
-    public Warehouse assignShipment(
-        Long shipmentId,
-        Long warehouseId) {
+        public Warehouse assignShipment(
+                Long shipmentId,
+                Long warehouseId) {
 
-    Warehouse warehouse =
-            getWarehouseById(warehouseId);
+                Warehouse warehouse = getWarehouseById(warehouseId);
 
-    if (warehouse.getAvailableCapacity() <= 0) {
-        throw new WarehouseCapacityExceededException();
-    }
+                if (warehouse.getAvailableCapacity() <= 0) {
+                        throw new WarehouseCapacityExceededException();
+                }
 
-    ShipmentAssignment assignment =
-            ShipmentAssignment.builder()
-                    .shipmentId(shipmentId)
-                    .warehouseId(warehouseId)
-                    .build();
+                ShipmentAssignment assignment =
+                        ShipmentAssignment.builder()
+                                .shipmentId(shipmentId)
+                                .warehouseId(warehouseId)
+                                .build();
 
-    assignmentRepository.save(assignment);
+                assignmentRepository.save(assignment);
 
-    warehouse.setAvailableCapacity(
-            warehouse.getAvailableCapacity() - 1);
+                warehouse.setAvailableCapacity(warehouse.getAvailableCapacity() - 1);
 
-    return repository.save(warehouse);
-    }
+                return repository.save(warehouse);
+        }
+
+        public Warehouse autoAssignShipment(Long shipmentId) {
+                List<Warehouse> warehouses = repository.findAll();
+                
+                if (warehouses.isEmpty()) {
+                        Warehouse defaultWarehouse = Warehouse.builder()
+                        .warehouseCode("WH001")
+                        .name("Default Warehouse")
+                        .location("Hyderabad")
+                        .capacity(100)
+                        .availableCapacity(100)
+                        .build();
+
+                        repository.save(defaultWarehouse);
+
+                        warehouses = List.of(defaultWarehouse);
+                }
+                
+                Warehouse selectedWarehouse = warehouses.stream()
+                        .filter(w -> w.getAvailableCapacity() > 0)
+                        .findFirst()
+                        .orElseThrow(() ->
+                                new RuntimeException("No warehouse has available capacity"));
+
+                ShipmentAssignment assignment =
+                        ShipmentAssignment.builder()
+                                .shipmentId(shipmentId)
+                                .warehouseId(selectedWarehouse.getId())
+                                .build();
+
+                assignmentRepository.save(assignment);
+
+                selectedWarehouse.setAvailableCapacity(
+                        selectedWarehouse.getAvailableCapacity() - 1);
+
+                repository.save(selectedWarehouse);
+
+                return selectedWarehouse;
+        }
 }
