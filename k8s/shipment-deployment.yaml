@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: shipment-service
+  namespace: smart-logistics
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: shipment-service
+
+  template:
+    metadata:
+      labels:
+        app: shipment-service
+
+    spec:
+      containers:
+        - name: shipment-service
+          image: shipment-service:v1
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/shipment_db
+
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
