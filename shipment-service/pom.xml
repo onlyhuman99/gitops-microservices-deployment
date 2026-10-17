@@ -22,7 +22,7 @@
     <description>Shipment Service for GitOps Microservices Deployment</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
 
     <dependencies>
