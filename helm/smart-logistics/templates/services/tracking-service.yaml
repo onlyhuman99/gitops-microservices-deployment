@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tracking-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: tracking-service
+  ports:
+    - port: {{ .Values.services.tracking.port }}
+      targetPort: {{ .Values.services.tracking.port }}
+  type: {{ .Values.services.tracking.type }}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipment-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: shipment-service
+  ports:
+    - protocol: TCP
+      port: {{ .Values.services.shipment.port }}
+      targetPort: {{ .Values.services.shipment.port }}
+  type: {{ .Values.services.shipment.type }}

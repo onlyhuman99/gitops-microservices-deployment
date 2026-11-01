@@ -1,0 +1,32 @@
+namespace: smart-logistics
+
+postgres:
+  image: postgres:16
+  storage: 1Gi
+  username: postgres
+  password: Pardhu@123
+
+services:
+  shipment:
+    image: shipment-service:v1
+    port: 8081
+    type: NodePort
+    database: shipment_db
+
+  tracking:
+    image: tracking-service:v1
+    port: 8082
+    type: ClusterIP
+    database: tracking_db
+
+  warehouse:
+    image: warehouse-service:v1
+    port: 8083
+    type: ClusterIP
+    database: warehouse_db
+
+  notification:
+    image: notification-service:v1
+    port: 8084
+    type: ClusterIP
+    database: notification_db

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-service
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app: warehouse-service
+  ports:
+    - port: {{ .Values.services.warehouse.port }}
+      targetPort: {{ .Values.services.warehouse.port }}
+  type: {{ .Values.services.warehouse.type }}
