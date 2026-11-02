@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    repoURL: git@github.com:onlyhuman99/gitops-microservices-deployment.git
+    repoURL: https://github.com/onlyhuman99/gitops-microservices-deployment.git
     targetRevision: week-3-gitops-argocd
     path: helm/smart-logistics
 
