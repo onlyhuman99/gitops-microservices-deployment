@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: notification-service:v1
+          image: {{ .Values.services.notification.image }}
           imagePullPolicy: Never
           ports:
             - containerPort: 8084
