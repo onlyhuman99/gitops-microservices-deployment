@@ -16,7 +16,7 @@ spec:
       containers:
         - name: tracking-service
           image: {{ .Values.services.tracking.image }}
-          imagePullPolicy: fNotPresent
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
           env:
