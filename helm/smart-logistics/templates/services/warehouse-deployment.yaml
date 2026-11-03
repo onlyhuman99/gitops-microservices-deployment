@@ -16,7 +16,7 @@ spec:
       containers:
         - name: warehouse-service
           image: {{ .Values.services.warehouse.image }}
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8083
           env:

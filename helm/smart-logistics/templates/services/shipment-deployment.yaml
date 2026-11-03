@@ -16,7 +16,7 @@ spec:
       containers:
         - name: shipment-service
           image: {{ .Values.services.shipment.image }}
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.services.shipment.port }}
           env:
