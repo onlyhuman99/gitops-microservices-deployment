@@ -20,7 +20,20 @@ permissions:
 jobs:
   build-test-publish:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: tracking_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,6 +46,10 @@ jobs:
           cache: maven
 
       - name: Test all microservices
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/tracking_db
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: testpassword
         run: |
           for service in shipment-service tracking-service warehouse-service notification-service; do
             echo "Testing $service"
