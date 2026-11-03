@@ -7,6 +7,7 @@ on:
       - week-4-cicd-github-actions
     paths-ignore:
       - 'helm/smart-logistics/values.yaml'
+
   pull_request:
     branches:
       - week-4-cicd-github-actions
@@ -20,13 +21,14 @@ permissions:
 jobs:
   build-test-publish:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: testpassword
-          POSTGRES_DB: tracking_db
+          POSTGRES_DB: postgres
         ports:
           - 5432:5432
         options: >-
@@ -34,6 +36,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -45,14 +48,35 @@ jobs:
           java-version: '25'
           cache: maven
 
+      - name: Create service databases
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+          for db in shipment_db tracking_db warehouse_db notification_db; do
+            PGPASSWORD=testpassword psql \
+              -h localhost \
+              -U postgres \
+              -d postgres \
+              -c "CREATE DATABASE $db;"
+          done
+
       - name: Test all microservices
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/tracking_db
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: testpassword
         run: |
           for service in shipment-service tracking-service warehouse-service notification-service; do
             echo "Testing $service"
+
+            case "$service" in
+              shipment-service) db=shipment_db ;;
+              tracking-service) db=tracking_db ;;
+              warehouse-service) db=warehouse_db ;;
+              notification-service) db=notification_db ;;
+            esac
+
+            export SPRING_DATASOURCE_URL="jdbc:postgresql://localhost:5432/$db"
+            export SPRING_DATASOURCE_USERNAME=postgres
+            export SPRING_DATASOURCE_PASSWORD=testpassword
+
             cd "$GITHUB_WORKSPACE/$service"
             chmod +x mvnw
             ./mvnw -B clean verify
@@ -76,6 +100,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           for service in shipment-service tracking-service warehouse-service notification-service; do
+            echo "Building $service"
+
             docker buildx build \
               --push \
               --tag "ghcr.io/onlyhuman99/${service}:${IMAGE_TAG}" \
@@ -88,8 +114,11 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           sed -i '/^  shipment:/,/^  tracking:/ s|image:.*|image: ghcr.io/onlyhuman99/shipment-service:'"${IMAGE_TAG}"'|' helm/smart-logistics/values.yaml
+
           sed -i '/^  tracking:/,/^  warehouse:/ s|image:.*|image: ghcr.io/onlyhuman99/tracking-service:'"${IMAGE_TAG}"'|' helm/smart-logistics/values.yaml
+
           sed -i '/^  warehouse:/,/^  notification:/ s|image:.*|image: ghcr.io/onlyhuman99/warehouse-service:'"${IMAGE_TAG}"'|' helm/smart-logistics/values.yaml
+
           sed -i '/^  notification:/,$ s|image:.*|image: ghcr.io/onlyhuman99/notification-service:'"${IMAGE_TAG}"'|' helm/smart-logistics/values.yaml
 
       - name: Commit updated Helm image tags
@@ -97,7 +126,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add helm/smart-logistics/values.yaml
+
           if ! git diff --cached --quiet; then
             git commit -m "Update service images to ${GITHUB_SHA}"
             git push
