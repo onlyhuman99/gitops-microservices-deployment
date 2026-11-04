@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/onlyhuman99/gitops-microservices-deployment.git
-    targetRevision: week-3-gitops-argocd
+    targetRevision: week-5-monitoring-observability
     path: helm/smart-logistics
 
   destination:
