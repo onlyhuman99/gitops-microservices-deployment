@@ -28,7 +28,18 @@ grafana:
       datasources:
         - name: Prometheus
           type: prometheus
+          uid: PBFA97CFB590B2093
           access: proxy
           url: http://prometheus-server.monitoring.svc.cluster.local
           isDefault: true
           editable: false
+
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: monitoring
+      provider:
+        allowUiUpdates: true
+        foldersFromFilesStructure: false

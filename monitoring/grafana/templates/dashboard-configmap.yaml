@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: smart-logistics-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  smart-logistics-dashboard.json: |-
+{{ .Files.Get "dashboards/smart-logistics-dashboard.json" | indent 4 }}
