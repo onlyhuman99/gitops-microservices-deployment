@@ -1,25 +1,40 @@
-Client
-   |
-   |
-   v
-+-------------------+
-| Shipment Service  |
-+-------------------+
-          |
-          |
-          +----------------+
-          |                |
-          v                v
-+----------------+   +------------------+
-| Tracking       |   | Warehouse        |
-| Service        |   | Service          |
-+----------------+   +------------------+
-          |
-          |
-          v
-+------------------+
-| Notification     |
-| Service          |
-+------------------+
+                         GitHub Repository
+                                |
+                         GitHub Actions
+                                |
+                         Build & Push Images
+                                |
+                              GHCR
+                                |
+                             Argo CD
+                                |
+                         Kubernetes Cluster
+                                |
+                     Namespace: smart-logistics
+                                |
+             +------------------+------------------+
+             |                  |                  |
+       Shipment Service   Tracking Service   Warehouse Service
+             |                  |                  |
+             +------------------+------------------+
+                                |
+                       Notification Service
 
-Each service owns its own PostgreSQL database.
+             Each service owns its own PostgreSQL database.
+
+
+                    Monitoring Namespace
+                                |
+                   +------------+------------+
+                   |                         |
+               Prometheus                  Grafana
+                   |                         |
+                   |                    Queries Metrics
+                   |                         |
+                   +-------------------------+
+                                |
+                       /actuator/prometheus
+                                |
+             +------------------+------------------+
+             |          |          |               |
+          Shipment   Tracking   Warehouse    Notification
