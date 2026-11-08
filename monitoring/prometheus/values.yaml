@@ -1,0 +1,53 @@
+prometheus:
+  alertmanager:
+    enabled: false
+
+  kube-state-metrics:
+    enabled: false
+
+  prometheus-node-exporter:
+    enabled: false
+
+  prometheus-pushgateway:
+    enabled: false
+
+  server:
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    persistentVolume:
+      enabled: false
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 768Mi
+
+  extraScrapeConfigs: |
+    - job_name: 'shipment-service'
+      metrics_path: /actuator/prometheus
+      static_configs:
+        - targets:
+            - shipment-service.smart-logistics.svc.cluster.local:8081
+
+    - job_name: 'tracking-service'
+      metrics_path: /actuator/prometheus
+      static_configs:
+        - targets:
+            - tracking-service.smart-logistics.svc.cluster.local:8082
+
+    - job_name: 'warehouse-service'
+      metrics_path: /actuator/prometheus
+      static_configs:
+        - targets:
+            - warehouse-service.smart-logistics.svc.cluster.local:8083
+
+    - job_name: 'notification-service'
+      metrics_path: /actuator/prometheus
+      static_configs:
+        - targets:
+            - notification-service.smart-logistics.svc.cluster.local:8084

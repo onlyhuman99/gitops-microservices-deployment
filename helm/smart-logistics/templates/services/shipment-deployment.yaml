@@ -1,3 +1,4 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,10 +17,12 @@ spec:
       containers:
         - name: shipment-service
           image: {{ .Values.services.shipment.image }}
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.services.shipment.port }}
           env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage=50.0"
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://postgres:5432/{{ .Values.services.shipment.database }}"
             - name: SPRING_DATASOURCE_USERNAME
@@ -32,3 +35,34 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
+
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.services.shipment.port }}
+            failureThreshold: 30
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.services.shipment.port }}
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.services.shipment.port }}
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 768Mi

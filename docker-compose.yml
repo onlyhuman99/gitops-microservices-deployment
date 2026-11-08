@@ -6,7 +6,7 @@ services:
 
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Pardhu@123
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: postgres
 
     ports:
@@ -31,7 +31,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shipment_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
   tracking-service:
     build:
@@ -48,7 +48,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tracking_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
   warehouse-service:
     build:
@@ -65,7 +65,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/warehouse_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
   notification-service:
     build:
@@ -82,7 +82,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notification_db
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Pardhu@123
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
 volumes:
   postgres-data:

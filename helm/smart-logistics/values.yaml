@@ -4,29 +4,28 @@ postgres:
   image: postgres:16
   storage: 1Gi
   username: postgres
-  password: Pardhu@123
 
 services:
   shipment:
-    image: shipment-service:v1
+    image: ghcr.io/onlyhuman99/shipment-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8081
     type: NodePort
     database: shipment_db
 
   tracking:
-    image: tracking-service:v1
+    image: ghcr.io/onlyhuman99/tracking-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8082
     type: ClusterIP
     database: tracking_db
 
   warehouse:
-    image: warehouse-service:v1
+    image: ghcr.io/onlyhuman99/warehouse-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8083
     type: ClusterIP
     database: warehouse_db
 
   notification:
-    image: notification-service:v1
+    image: ghcr.io/onlyhuman99/notification-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8084
     type: ClusterIP
     database: notification_db

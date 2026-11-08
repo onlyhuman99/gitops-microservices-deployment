@@ -1,0 +1,20 @@
+# SOPS / age private keys
+keys.txt
+*.agekey
+
+# Local environment and secret files
+.env
+.env.*
+!.env.example
+*.secret
+*.secret.yaml
+*.secret.yml
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
