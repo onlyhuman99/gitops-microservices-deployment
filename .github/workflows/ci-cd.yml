@@ -4,13 +4,13 @@ name: CI-CD Pipeline
 on:
   push:
     branches:
-      - week-4-cicd-github-actions
+      - week-5-monitoring-observability
     paths-ignore:
       - 'helm/smart-logistics/values.yaml'
 
   pull_request:
     branches:
-      - week-4-cicd-github-actions
+      - week-5-monitoring-observability
     paths-ignore:
       - 'helm/smart-logistics/values.yaml'
 
