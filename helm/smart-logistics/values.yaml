@@ -7,25 +7,25 @@ postgres:
 
 services:
   shipment:
-    image: ghcr.io/onlyhuman99/shipment-service:c0ab56bf7e71d917070736ffed9f70a9ac57d1a2
+    image: ghcr.io/onlyhuman99/shipment-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8081
     type: NodePort
     database: shipment_db
 
   tracking:
-    image: ghcr.io/onlyhuman99/tracking-service:c0ab56bf7e71d917070736ffed9f70a9ac57d1a2
+    image: ghcr.io/onlyhuman99/tracking-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8082
     type: ClusterIP
     database: tracking_db
 
   warehouse:
-    image: ghcr.io/onlyhuman99/warehouse-service:c0ab56bf7e71d917070736ffed9f70a9ac57d1a2
+    image: ghcr.io/onlyhuman99/warehouse-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8083
     type: ClusterIP
     database: warehouse_db
 
   notification:
-    image: ghcr.io/onlyhuman99/notification-service:c0ab56bf7e71d917070736ffed9f70a9ac57d1a2
+    image: ghcr.io/onlyhuman99/notification-service:1a0e36c5424d1b570b87415af9385d8cd56b06a6
     port: 8084
     type: ClusterIP
     database: notification_db
